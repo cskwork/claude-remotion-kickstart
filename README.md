@@ -2,7 +2,7 @@
 
 Create videos programmatically with Claude Code and Remotion. This starter kit provides pre-built components, AI integrations, and a streamlined workflow for generating professional videos.
 
-**[Watch the demo on YouTube](#)** to see how it works.
+**[Watch the demo on YouTube](https://youtu.be/z7Bkf3Vc63U)** to see how it works.
 
 > **WARNING:** This repository was put together as an experiment with a significant amount of vibe-coding. There are surely many bugs and inconsistencies in the documentation. If I get around to cleaning things up in the future, I'll remove this warning. Use at your own risk, and have fun!
 
