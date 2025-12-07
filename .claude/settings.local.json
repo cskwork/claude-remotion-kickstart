@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__remotion-documentation__remotion-documentation"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
