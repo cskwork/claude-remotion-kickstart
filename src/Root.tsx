@@ -16,6 +16,7 @@ import {
 } from "./compositions/example1/Composition";
 import { Example2Square } from "./compositions/example2/Composition";
 import { MyVideo } from "./compositions/my-video/Composition";
+import { ProductDemo } from "./compositions/product-demo/Composition";
 import { VIDEO_CONFIG, getDurationInFrames } from "./config";
 import {
   sampleTypeScript,
@@ -30,6 +31,10 @@ export const RemotionRoot: React.FC = () => {
       <Folder name="Compositions">
         <Folder name="MyVideo">
           <MyVideo />
+        </Folder>
+
+        <Folder name="ProductDemo">
+          <ProductDemo />
         </Folder>
 
         {/* Example compositions for reference */}
