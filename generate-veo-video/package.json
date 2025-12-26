@@ -1,0 +1,13 @@
+{
+  "name": "generate-veo-video",
+  "version": "1.0.0",
+  "description": "Generate Veo 3.1 videos using Google Gemini API",
+  "type": "module",
+  "scripts": {
+    "generate": "node scripts/generate-video.js"
+  },
+  "dependencies": {
+    "@google/genai": "^1.0.0",
+    "dotenv": "^16.4.7"
+  }
+}
