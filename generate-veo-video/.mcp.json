@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "mcp-veo3": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["mcp-veo3", "--output-dir", "./output"],
+      "env": {}
+    }
+  }
+}

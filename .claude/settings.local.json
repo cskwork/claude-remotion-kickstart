@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "mcp__remotion-documentation__remotion-documentation",
-      "Bash(pnpm install)"
+      "Bash(pnpm install)",
+      "Bash(powershell:*)",
+      "Bash(move src generate-remotion-video )",
+      "Bash(move public generate-remotion-video )",
+      "Bash(move context generate-remotion-video )",
+      "Bash(move docs generate-remotion-video )",
+      "Bash(move out generate-remotion-video)"
     ],
     "deny": [],
     "ask": []

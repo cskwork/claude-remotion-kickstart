@@ -1,10 +1,8 @@
-node_modules
-dist
+node_modules/
 .DS_Store
+*.log
 .env
-
-# Ignore the output video from Git but not videos you import into src/.
-out
-.playwright-mcp/
-
-build
+dist/
+out/
+.pnpm-debug.log*
+.claude/settings.local.json
