@@ -1,258 +1,247 @@
 ![Claude Remotion Kickstart](public/images/logo.png)
 
-Create videos programmatically with Claude Code and Remotion. This starter kit provides pre-built components, AI integrations, and a streamlined workflow for generating professional videos.
+Create videos programmatically using Claude Code. Describe what you want, and Claude builds it with Remotion.
 
-**[Watch the demo on YouTube](https://youtu.be/z7Bkf3Vc63U)** to see how it works.
+**[Watch the demo on YouTube](https://youtu.be/z7Bkf3Vc63U)**
 
-> **WARNING:** This repository was put together as an experiment with a significant amount of vibe-coding. There are surely many bugs and inconsistencies in the documentation. If I get around to cleaning things up in the future, I'll remove this warning. Use at your own risk, and have fun!
+> **Note:** This project is experimental. Expect bugs and documentation inconsistencies.
 
-## Features
+## Quick Start
 
-- **Pre-built video components** - Title slides, code blocks, diagrams, captions, and more
-- **AI-powered asset generation** - Generate images, videos, and voiceovers with slash commands
-- **Configurable rendering** - Customize fps and resolution with video presets
-- **Tailwind CSS styling** - Customize everything with familiar utility classes
-- **Transcript-based timing** - Sync visuals to voiceovers with word-level timestamps
+```bash
+# 1. Clone and install
+git clone https://github.com/jhartquist/claude-remotion-kickstart.git
+cd claude-remotion-kickstart
+pnpm install
+
+# 2. Tell Claude what video you want (see workflow below)
+
+# 3. Render your video
+pnpm exec remotion render <CompositionId>
+```
+
+## Video Generation Workflow
+
+Work with Claude Code conversationally to create videos from prompts.
+
+### Step 1: Describe Your Video
+
+Tell Claude what you want to create. Be specific about:
+- **Topic** - What the video is about
+- **Duration** - How long (e.g., 60 seconds, 2 minutes)
+- **Audience** - Who will watch it
+- **Style** - Visual theme, colors, tone
+
+**Example prompt:**
+```
+Create a 90-second explainer video about how async/await works in JavaScript.
+Target audience: beginner developers.
+Include a title slide, 3 code examples with explanations, and a summary.
+Use a dark theme with syntax-highlighted code.
+```
+
+### Step 2: Create Composition
+
+Claude will scaffold your video:
+- Run `/new-composition my-video` to create the folder structure
+- Generate `content.ts` with your text and structure
+- Build segment components for each section
+
+**What gets created:**
+```
+src/compositions/my-video/
+├── Composition.tsx    # Main video component
+├── config.ts          # Timing/duration settings
+├── content.ts         # Your content
+└── segments/          # Individual sections
+```
+
+### Step 3: Generate Assets (Optional)
+
+Enhance your video with AI-generated assets:
+
+| Command | Purpose |
+|---------|---------|
+| `/generate-image <prompt>` | Create images with Nano Banana Pro |
+| `/generate-video <prompt>` | Generate video clips with Veo 3.1 |
+| `/transcribe <file>` | Get word-level timestamps from audio |
+| `/screenshot <url>` | Capture website screenshots |
+
+**ElevenLabs MCP** is also available for voiceovers and sound effects.
+
+**Example:**
+```
+Generate a background image: abstract dark gradient with subtle code patterns
+```
+
+### Step 4: Preview and Iterate
+
+```bash
+pnpm run dev
+```
+
+Open http://localhost:3000 to preview. Then tell Claude what to change:
+- "Make the title bigger"
+- "Add a fade transition between slides"
+- "Change the code example to show error handling"
+- "Speed up the intro section"
+
+### Step 5: Render
+
+```bash
+pnpm exec remotion render <CompositionId>
+```
+
+Output saves to `out/<CompositionId>.mp4`.
+
+**Render options:**
+```bash
+# Render at different quality
+pnpm exec remotion render MyVideo --quality=80
+
+# Render specific frames only
+pnpm exec remotion render MyVideo --frame-range=0-60
+
+# Render a still image
+pnpm exec remotion still MyVideo
+```
+
+## Example Prompts
+
+Copy and customize these prompts for different video types.
+
+### Educational / Explainer
+
+```
+Create a 90-second explainer video about [topic].
+Target audience: [beginners/intermediate/advanced].
+Include: title slide, 3 key concepts with visuals, and a summary.
+Style: clean, professional, dark theme.
+```
+
+### Code Tutorial
+
+```
+Create a code tutorial video explaining [concept/function/pattern].
+Language: [JavaScript/Python/etc.]
+Show the code with syntax highlighting.
+Add animated line highlights to walk through key sections.
+Duration: 2 minutes.
+Include comments explaining each step.
+```
+
+### Product Demo
+
+```
+Create a product demo video for [product/feature name].
+Include:
+- Intro slide with product name and tagline
+- 3 feature highlights with screenshots or animations
+- Call-to-action slide at the end
+Duration: 60 seconds.
+Style: [modern/minimal/corporate].
+```
+
+### General Template
+
+```
+Create a [duration] video about [topic].
+Audience: [who will watch]
+Include: [specific sections or elements]
+Style: [theme, colors, tone]
+Assets: [any images, screenshots, or videos to include]
+```
+
+## Slash Commands
+
+| Command | Description |
+|---------|-------------|
+| `/new-composition <name>` | Create a new video composition with boilerplate |
+| `/generate-image <prompt>` | Generate an image using Nano Banana Pro |
+| `/generate-video <prompt>` | Generate a video clip using Veo 3.1 |
+| `/transcribe <file>` | Transcribe audio/video with timestamps |
+| `/screenshot <url>` | Capture a full-page screenshot |
+
+## Components
+
+| Component | Description | Key Props |
+|-----------|-------------|-----------|
+| `TitleSlide` | Full-screen title | `title`, `className` |
+| `ContentSlide` | Header + body text | `header`, `content`, `className` |
+| `CodeSlide` | Syntax-highlighted code | `code`, `language`, `highlightLines` |
+| `DiagramSlide` | Mermaid/D2 diagrams | `type`, `diagram`, `theme` |
+| `VideoSlide` | Embed video files | `filename`, `startTime` |
+| `BRollVideo` | Video with zoom effects | `filename`, `zoomStart`, `zoomEnd` |
+| `Screenshot` | Scrolling screenshot | `src`, `scrollSpeed` |
+| `Logo` | Animated logo overlay | `src`, `position`, `size` |
+| `Caption` | Subtitle overlay | `transcript`, `className` |
+| `Music` | Background audio | `src`, `volume`, `fadeInSeconds` |
+| `Code` | Code block (no slide) | `code`, `language`, `theme` |
+| `Diagram` | Diagram (no slide) | `type`, `diagram` |
+| `AsciiPlayer` | Terminal recordings | `castFile`, `playbackSpeed` |
+
+All components default to dark theme (`bg-black text-white`). Override with `className`.
+
+## Video Presets
+
+| Preset | Resolution | Aspect |
+|--------|------------|--------|
+| `Landscape-720p` | 1280x720 | 16:9 |
+| `Landscape-1080p` | 1920x1080 | 16:9 |
+| `Square-1080p` | 1080x1080 | 1:1 |
+| `Portrait-1080p` | 1080x1920 | 9:16 |
+
+All presets render at 60fps.
 
 ## Prerequisites
 
 ### Required
 
 - **Node.js 20+** - [Download](https://nodejs.org/)
-- **pnpm** - Install with `npm install -g pnpm`
-- **Claude Code** - [Install Claude Code](https://docs.anthropic.com/en/docs/claude-code) to use slash commands
-- **ffmpeg** - Required for video/audio processing
+- **pnpm** - Install: `npm install -g pnpm`
+- **Claude Code** - [Install](https://docs.anthropic.com/en/docs/claude-code)
+- **ffmpeg** - For video/audio processing
   - macOS: `brew install ffmpeg`
-  - Ubuntu/Debian: `sudo apt install ffmpeg`
+  - Ubuntu: `sudo apt install ffmpeg`
   - Windows: [Download](https://ffmpeg.org/download.html)
 
-### Optional (for AI features)
+### Optional (AI Features)
 
-These are only needed if you want to use the AI-powered slash commands:
-
-- **Replicate API key** - For image/video generation (`/generate-image`, `/generate-video`)
-- **Deepgram API key** - For transcription (`/transcribe`)
-- **ElevenLabs API key** - For voiceovers and sound effects (via MCP)
-
-## Installation
+Set these in your shell (not .env):
 
 ```bash
-# Clone the repository
-git clone https://github.com/jhartquist/claude-remotion-kickstart.git
-cd claude-remotion-kickstart
+# Image/video generation
+export REPLICATE_API_TOKEN=your_token
 
-# Install dependencies
-pnpm install
+# Transcription
+export DEEPGRAM_API_KEY=your_key
+
+# Voiceovers (via MCP)
+export ELEVENLABS_API_KEY=your_key
 ```
 
-## Environment Variables
-
-Environment variables must be set in your shell for AI features to work. A `.env` file will not be read automatically.
+## Commands Reference
 
 ```bash
-# Replicate - for /generate-image and /generate-video
-export REPLICATE_API_TOKEN=your_replicate_token
-
-# Deepgram - for /transcribe
-export DEEPGRAM_API_KEY=your_deepgram_key
-
-# ElevenLabs - for voiceovers (used via MCP server)
-export ELEVENLABS_API_KEY=your_elevenlabs_key
-```
-
-## Quick Start
-
-A starter composition called `MyVideo` is already included—you can start editing right away.
-
-### 1. Preview in the studio
-
-```bash
-pnpm run dev
-```
-
-Open http://localhost:3000 to see the example videos and `MyVideo`.
-
-### 2. Edit your content
-
-```typescript
-// src/compositions/my-video/content.ts
-export const CONTENT = {
-  title: "My First Video",
-  subtitle: "Created with Claude and Remotion",
-};
-```
-
-### 3. Render the final video
-
-```bash
-pnpm exec remotion render MyVideo
-```
-
-Output will be saved to `out/MyVideo.mp4`.
-
-### 4. Create more compositions
-
-When you're ready to create additional videos, use the Claude Code slash command:
-
-```bash
-/new-composition another-video
-```
-
-This creates a new folder in `src/compositions/` with boilerplate config, content, and segments.
-
-## Commands
-
-```bash
-# Start development preview
-pnpm run dev
-
-# Render a composition
-pnpm exec remotion render <CompositionId>
-
-# Render a still frame
-pnpm exec remotion still <CompositionId>
-
-# Lint code
-pnpm run lint
-
-# Upgrade Remotion
-pnpm run upgrade
-```
-
-## GitHub Actions
-
-A workflow is included to render videos in CI. By default it's manual-only to avoid using CI minutes unexpectedly.
-
-To run it, go to **Actions > Render video > Run workflow** in your GitHub repo. The rendered video is uploaded as an artifact you can download.
-
-To render automatically on pull requests, add `pull_request` to the trigger:
-
-```yaml
-on:
-  pull_request:
-  workflow_dispatch:
-```
-
-## Slash Commands (Claude Code)
-
-When using Claude Code, these slash commands are available:
-
-| Command | Description |
-|---------|-------------|
-| `/new-composition <name>` | Create a new composition with boilerplate |
-| `/generate-image <prompt>` | Generate an image with Nano Banana Pro |
-| `/generate-video <prompt>` | Generate a video with Veo 3.1 |
-| `/transcribe <file>` | Transcribe audio/video with Deepgram |
-| `/screenshot <url>` | Take a full-page screenshot |
-
-## Video Presets
-
-Custom presets can be easily created in `src/presets.ts`. Default presets render at 60fps:
-
-| Preset | Resolution | Aspect Ratio |
-|--------|------------|--------------|
-| `Landscape-720p` | 1280×720 | 16:9 |
-| `Landscape-1080p` | 1920×1080 | 16:9 |
-| `Square-1080p` | 1080×1080 | 1:1 |
-| `Portrait-1080p` | 1080×1920 | 9:16 |
-
-## Components
-
-### Slides
-
-| Component | Description |
-|-----------|-------------|
-| `TitleSlide` | Full-screen title with optional subtitle |
-| `ContentSlide` | Header with body text |
-| `CodeSlide` | Syntax-highlighted code with optional title |
-| `DiagramSlide` | Mermaid or D2 diagrams |
-| `VideoSlide` | Embed video files |
-
-### Overlays
-
-| Component | Description |
-|-----------|-------------|
-| `Logo` | Animated logo in corner |
-| `Caption` | Subtitle/caption overlay |
-| `Music` | Background audio with fade in/out |
-
-### Media
-
-| Component | Description |
-|-----------|-------------|
-| `BRollVideo` | Video with zoom and timing control |
-| `ZoomableVideo` | Video with multiple zoom segments |
-| `Screenshot` | Scrolling screenshot animation |
-| `AsciiPlayer` | Terminal recording playback |
-| `Code` | Syntax-highlighted code block |
-| `Diagram` | Mermaid/D2 diagram renderer |
-
-## Styling
-
-Components use a black/white default theme. Override with Tailwind classes:
-
-```tsx
-// Default: black background, white text
-<TitleSlide title="Hello" />
-
-// Custom theme
-<TitleSlide
-  title="Hello"
-  className="bg-gradient-to-r from-blue-900 to-purple-900 text-yellow-300"
-/>
-```
-
-## Timing
-
-Use `secondsToFrames()` to convert seconds to frames:
-
-```tsx
-import { secondsToFrames } from "../../config";
-import { Sequence } from "remotion";
-
-// Show logo from 5.2s to 7.9s
-<Sequence from={secondsToFrames(5.2)} durationInFrames={secondsToFrames(2.7)}>
-  <Logo src="logo.svg" />
-</Sequence>
-```
-
-## Transitions
-
-Use Remotion's built-in `TransitionSeries` for transitions:
-
-```tsx
-import { TransitionSeries } from "@remotion/transitions";
-import { fade } from "@remotion/transitions/fade";
-import { linearTiming } from "@remotion/transitions";
-
-<TransitionSeries>
-  <TransitionSeries.Sequence durationInFrames={180}>
-    <TitleSlide title="Hello" />
-  </TransitionSeries.Sequence>
-  <TransitionSeries.Transition
-    presentation={fade()}
-    timing={linearTiming({ durationInFrames: 30 })}
-  />
-  <TransitionSeries.Sequence durationInFrames={300}>
-    <ContentSlide header="Welcome" content="..." />
-  </TransitionSeries.Sequence>
-</TransitionSeries>
+pnpm run dev                              # Start preview studio
+pnpm exec remotion render <id>            # Render video
+pnpm exec remotion still <id>             # Render still frame
+pnpm run lint                             # Lint code
+pnpm run upgrade                          # Upgrade Remotion
 ```
 
 ## Project Structure
 
 ```
 src/
-├── components/          # Reusable video components
-├── compositions/        # Your video projects
-│   ├── example1/        # Basic slideshow example
-│   └── example2/        # Multi-feature demo
-├── utils/               # Helper functions
-├── config.ts            # Timing utilities
-├── presets.ts           # Video resolution presets
-└── Root.tsx             # Composition registry
+├── components/      # Reusable video components
+├── compositions/    # Your video projects
+├── utils/           # Helper functions
+├── config.ts        # Timing utilities
+├── presets.ts       # Video presets
+└── Root.tsx         # Composition registry
 
-public/                  # Static assets (images, audio, video)
+public/              # Static assets (images, audio, video)
 ```
 
 ## Resources
@@ -263,6 +252,6 @@ public/                  # Static assets (images, audio, video)
 
 ## License
 
-This starter kit is [MIT licensed](LICENSE).
+MIT licensed. See [LICENSE](LICENSE).
 
-**Note:** Remotion itself has separate licensing requirements. Companies with 3+ employees need a Remotion license to render videos. See the [Remotion License](https://github.com/remotion-dev/remotion/blob/main/LICENSE.md) for details.
+**Note:** Remotion requires a license for companies with 3+ employees. See [Remotion License](https://github.com/remotion-dev/remotion/blob/main/LICENSE.md).

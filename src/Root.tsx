@@ -18,6 +18,7 @@ import { Example2Square } from "./compositions/example2/Composition";
 import { MyVideo } from "./compositions/my-video/Composition";
 import { ProductDemo } from "./compositions/product-demo/Composition";
 import { QuadraticEquation } from "./compositions/quadratic-equation/Composition";
+import { AiConcerns } from "./compositions/ai-concerns/Composition";
 import { VIDEO_CONFIG, getDurationInFrames } from "./config";
 import {
   sampleTypeScript,
@@ -40,6 +41,10 @@ export const RemotionRoot: React.FC = () => {
 
         <Folder name="QuadraticEquation">
           <QuadraticEquation />
+        </Folder>
+
+        <Folder name="AiConcerns">
+          <AiConcerns />
         </Folder>
 
         {/* Example compositions for reference */}

@@ -6,6 +6,94 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a Remotion video project designed to make it easier to create videos programmatically with Claude. The project uses React, TypeScript, and Tailwind CSS.
 
+## Video Generation Workflow
+
+When the user asks to create a video, follow this workflow:
+
+### Step 1: Clarify Requirements
+
+Ask about (if not specified):
+- **Topic**: What is the video about?
+- **Duration**: How long? (e.g., 60 seconds, 2 minutes)
+- **Audience**: Who will watch?
+- **Style**: Theme, colors, tone (default: dark theme)
+- **Sections**: What segments to include?
+
+### Step 2: Create Composition
+
+1. Run `/new-composition <video-name>` to scaffold the folder structure
+2. This creates:
+   ```
+   src/compositions/<video-name>/
+   ├── Composition.tsx
+   ├── config.ts
+   ├── content.ts
+   └── segments/
+   ```
+
+### Step 3: Define Content
+
+Edit `content.ts` with the video's text and structure:
+```typescript
+export const CONTENT = {
+  title: "Video Title",
+  subtitle: "Subtitle here",
+  sections: [
+    { header: "Section 1", content: "..." },
+    { header: "Section 2", content: "..." },
+  ],
+};
+```
+
+### Step 4: Set Timing
+
+Edit `config.ts` with durations in seconds:
+```typescript
+export const TITLE_DURATION_SECONDS = 3;
+export const SECTION_DURATION_SECONDS = 5;
+export const TOTAL_DURATION_SECONDS = 13;
+```
+
+### Step 5: Build Segments
+
+Create segment components in `segments/` folder:
+- Import components from `src/components/`
+- Use content from `content.ts`
+- Each segment is a simple React component
+
+### Step 6: Assemble Composition
+
+In `Composition.tsx`, use `<Series>` to sequence segments:
+```tsx
+<Series>
+  <Series.Sequence durationInFrames={getDurationInFrames(TITLE_DURATION, fps)}>
+    <TitleSegment />
+  </Series.Sequence>
+  <Series.Sequence durationInFrames={getDurationInFrames(SECTION_DURATION, fps)}>
+    <ContentSegment />
+  </Series.Sequence>
+</Series>
+```
+
+### Step 7: Generate Assets (Optional)
+
+Offer to enhance with AI-generated assets:
+- `/generate-image <prompt>` - Create images
+- `/generate-video <prompt>` - Create video clips
+- `/transcribe <file>` - Get timestamps from audio
+- `/screenshot <url>` - Capture website screenshots
+- ElevenLabs MCP - Generate voiceovers
+
+### Step 8: Render
+
+```bash
+pnpm exec remotion render <CompositionId>
+```
+
+Output saves to `out/<CompositionId>.mp4`.
+
+---
+
 ## Package Manager
 
 **Always use `pnpm` for all commands.** Do not use `npm` or `npx`.
@@ -294,30 +382,40 @@ Take full page screenshots at 1280x720 viewport.
 | Diagram       | `type`, `diagram`, `theme?`, `sketch?`                                               | Render diagrams       |
 | Music         | `src`, `volume?`, `fadeInSeconds?`, `fadeOutSeconds?`, `loop?`                       | Background audio      |
 
-## Workflow Examples
+## Example Prompts
 
-### Basic Video Creation
+Use these as templates when the user asks to create videos:
 
-1. Run `/new-composition my-video` to create a new composition
-2. Edit `src/compositions/my-video/content.ts` with your text
-3. Edit `src/compositions/my-video/config.ts` for timing
-4. Add/modify segments as needed
-5. Render: `pnpm exec remotion render MyVideo`
+### Educational / Explainer
+```
+Create a 90-second explainer video about [topic].
+Target audience: [beginners/intermediate/advanced].
+Include: title slide, 3 key concepts with visuals, and a summary.
+Style: clean, professional, dark theme.
+```
 
-### AI-Generated Assets
+### Code Tutorial
+```
+Create a code tutorial video explaining [concept/function/pattern].
+Language: [JavaScript/Python/etc.]
+Show the code with syntax highlighting.
+Add animated line highlights to walk through key sections.
+Duration: 2 minutes.
+```
 
-1. Use `/generate-image` for reference images
-2. Use `/generate-video` for video clips
-3. Use ElevenLabs MCP tools for voiceovers
-4. Combine assets in Remotion compositions
-
-### Timed Content from Transcripts
-
-1. `/transcribe video.mp4` to get timestamps
-2. Parse `results.channels[0].alternatives[0].words`
-3. Create segments timed to the transcript
-4. Use `<Sequence from={...}>` for precise positioning
+### Product Demo
+```
+Create a product demo video for [product/feature name].
+Include: intro, 3 feature highlights, call-to-action.
+Duration: 60 seconds.
+Style: [modern/minimal/corporate].
+```
 
 ---
 
+## Notes
+
 - Don't run the dev server unless explicitly asked
+- Always use `pnpm`, never `npm` or `npx`
+- Default to dark theme (`bg-black text-white`)
+- All presets use 60fps
